@@ -26,9 +26,3 @@ var d = d3.csv("/static/js/latlong_list.csv", function(data) {
     marker.bindPopup(city.names);
   }
 });
-
-
-      
-
-  
-
