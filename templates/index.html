@@ -29,7 +29,7 @@
     </nav>
     <div class="col-md-12 jumbotron text-center">
       <h1>Social Distancing </h1>
-      <img class="nav-ufo" src="https://media.giphy.com/media/zJA5yw4qlvmaA/giphy.gif">
+      <!--<img class="nav-ufo" src="https://media.giphy.com/media/zJA5yw4qlvmaA/giphy.gif"> -->
       <p>Reach Healthy Highs !!! </p>
     </div>
     <div class="container">
@@ -45,16 +45,11 @@
                       <li class="filter list-group-item">
                         <label for="date">Enter a location </label>
                         <input class="form-control" id="state" type="text" placeholder="">
-                        <label for="date">Enter a location </label>
-                        <input class="form-control" id="state" type="text" placeholder="">
-                        <label for="date">Enter a location </label>
-                        <input class="form-control" id="state" type="text" placeholder="">
                       </li>
                     </ul>
                   </div>
-                  <button id="filter-btn" type="button" class="btn btn-default">Hiking</button>
-                  <button id="filter-btn" type="button" class="btn btn-default">Camping</button>
-                  <button id="filter-btn" type="button" class="btn btn-default">Dispensaries</button>
+                  <input class="form-control" id="city" type="text" placeholder="Sedona Area">
+                  <button id="button" type="button" class="btn btn-default">Filter</button>
                 </form>
               </div>
             </div>
@@ -66,24 +61,27 @@
   
             <table id="ufo-table" class="table table-striped">
               <thead>
-                <!-- <tr>
-                  <th class="table-head">Date/Time</th>
+                <tr>
                   <th class="table-head">City</th>
-                  <th class="table-head">State</th>
-                  <th class="table-head">Country</th>
-                  <th class="table-head">Shape</th>
-                  <th class="table-head">Duration</th>
-                  <th class="table-head">Comments</th> -->
+                  <th class="table-head">Lat</th>
+                  <th class="table-head">Lon</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                {% for ea in site_data %}
+                  <tr>
+                    <td>{{ea['name']}}</td>
+                    <td>{{ea['latitude']}}</td>
+                    <td>{{ea['longitude']}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
     <footer class="footer">
-      <span class="bottom">hiking</span>
     </footer>
   </div>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
@@ -91,8 +89,10 @@
   <!-- API key -->
   <script type="text/javascript" src="static/js/config.js"></script>
   <!-- Our JavaScript -->
+  <!-- <script src="static/js/logic.js"></script> -->
   <script type="text/javascript" src="static/js/logic.js"></script>
+  <!-- <script src="{{ url_for('static',filename='js/logic.js') }}"></script>   -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
-</body>
+  </body>
 
 </html>
