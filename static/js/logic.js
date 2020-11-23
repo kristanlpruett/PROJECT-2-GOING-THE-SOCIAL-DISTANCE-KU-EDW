@@ -99,7 +99,16 @@ function click(e) {
   d3.json(`/trails/${e.layer._popup._content}`).then(d => {    
     // Loop through the trail data
     d.forEach(function (tr) {
-      trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: trailIcon}).bindPopup(`${tr['trail']}<br>Length: ${tr['length']}<br>Difficulty: ${tr['difficulty']}`))
+      trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: trailIcon})
+      .bindPopup(
+        `<strong>${tr['trail']}</strong><br>
+        <a href=${tr['url']} target="_blank"><img src=${tr['image_url']}></a><br>
+        ${tr['summary']}<br>
+        Length: ${tr['length']}<br>
+        Difficulty: ${tr['difficulty']}<br>
+        Stars: ${tr['stars']}
+
+      `))
     });
     trailMarkers.addTo(trailLayer);
     myMap.addLayer(trailLayer);
@@ -109,7 +118,15 @@ function click(e) {
   d3.json(`/routes/${e.layer._popup._content}`).then(d => {    
     // Loop through the trail data
     d.forEach(function (tr) {
-      routeMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: routeIcon}).bindPopup(tr['route']))
+      routeMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: routeIcon})
+      .bindPopup(
+        `<strong>${tr['route']}</strong><br>
+        <a href=${tr['url']} target="_blank"><img src=${tr['image_url']}></a><br>
+        Type: ${tr['type']}<br>
+        Rating: ${tr['rating']}<br>
+        Pitches: ${tr['pitches']}<br>
+        Stars: ${tr['stars']}
+      `))
     });
     routeMarkers.addTo(routeLayer);
     myMap.addLayer(routeLayer);    
@@ -118,104 +135,14 @@ function click(e) {
   d3.json(`/dispensaries/${e.layer._latlng.lat}/${e.layer._latlng.lng}`).then(d => {    
   // Loop through the trail data
     d.forEach(function (tr) {
-      trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: dispIcon}).bindPopup(tr['dispensary']))
+      trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: dispIcon})
+      .bindPopup(
+        `<strong>${tr['dispensary']}</strong><br>
+        Type: ${tr['type']}<br>
+      `))
     });
     dispMarkers.addTo(dispLayer);
     myMap.addLayer(dispLayer);
   });
   
 };
-
-
-
-
-// function selectCity(lat, lon) {
-//   console.log(lat)
-//   console.log(lon)
-// }
-// })
-
-// console.log(a.latlng['lat'])
-// console.log(a.latlng['lng'])
-// //Bring in Trails data 
-// // d3.json(`/trails/${a.target._popup._content}`).then(d => {    
-// //   var jsonData = d
-          
-// //   // Create a new marker cluster group
-// //   var activityMarkers = L.markerClusterGroup();
-  
-// //   // Loop through the trail data
-// //   for (var j=0; j < jsonData.length; j++) {
-// //     var coords = [jsonData[j]['lat'],jsonData[j]['lon']]
-// //     activityMarkers.addLayer(L.marker(coords)).bindPopup(`Trail: ${jsonData[j]['city']}`)
-// //   }
-// //   myMap.addLayer(activityMarkers);
-// // });
-// // //Bring in Routes data
-// // d3.json(`/routes/${a.target._popup._content}`).then(d => {    
-// //   var jsonData = d
-           
-// //   // Create a new marker cluster group
-// //   var activityMarkers = L.markerClusterGroup();
-  
-// //   // Loop through the routes data
-// //   for (var j=0; j < jsonData.length; j++) {
-// //     var coords = [jsonData[j]['lat'],jsonData[j]['lon']]
-// //     activityMarkers.addLayer(L.marker(coords)).bindPopup(`Route: ${jsonData[j]['city']}`)
-// //   }
-// //   myMap.addLayer(activityMarkers);
-// // });
-// // Bring in Dispensaries data
-// d3.json(`/dispensaries/${a.latlng['lat']}/${a.latlng['lng']}`).then(d => {    
-//   var jsonData = d
-//   console.log(jsonData)
-            
-//   // Create a new marker cluster group
-//   var dispLayer = L.layerGroup()
-//   var dispMarkers = L.markerClusterGroup();
-
-
-
-//   jsonData.forEach(function (data) {
-//     var coords = [data['lat'],data['lon']]
-//     cityMarkers.addLayer(L.marker(coords),{icon: {iconUrl: 'static/js/green.png'}})
-//       .bindPopup(data['name'])     
-//   })
-
-
-
-
-
-
-//   // // Loop through the routes data
-//   // for (var j=0; j < jsonData.length; j++) {
-//   //   var coords = [jsonData[j]['lat'],jsonData[j]['lon']]
-//   //   cityMarkers.addLayer(L.marker(coords)).bindPopup(`Dispensary: ${jsonData[j]['name']}`)._popup._content=jsonData[j]['name'];
-    
-    
-//   // };
-//   // console.log(cityMarkers._popup._content);
-//   dispMarkers.addTo(dispLayer);
-//   myMap.addLayer(dispLayer);
-// });
-
-
-// // //Set on click funciton for each city marker to bring in the data for trails, routes, dispensaries, etc.
-// // cityMarkers.on("click", function (a) {
-// //   //get coordinates from properties of the clicked marker
-// //   // console.log(a.latlng)
-// //   d3.json(`/query/${a.target.options.title}`).then(d => {
-// //     // console.log(a.target.options);
-// //     d.forEach(function (c) { 
-// //       trailsArray.push(c)
-// //     });
-// //     //Create markers for each of the trailsArray
-// //     trailsArray.forEach(function(trail) {
-// //       var trailMarker = L.marker(trail['coords'], {icon: trailIcon, draggable: false, title: trail['city']})
-// //       trailMarker.addTo(myMap);
-// //       trailMarker.bindPopup(trail['city'])
-// //     });
-// //   });
-// //   //refocus map on selected area
-// //   myMap.flyTo([a.latlng['lat'],a.latlng['lng']],8)
-// // })
