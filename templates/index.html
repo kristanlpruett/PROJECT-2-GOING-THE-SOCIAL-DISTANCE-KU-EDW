@@ -8,22 +8,25 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
   <!-- <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> -->
   <link rel="stylesheet" type="text/css" href="./static/css/style.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+  <script src = "https://d3js.org/d3.v4.min.js"></script> 
+  <!-- Marker Cluster CSS -->
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
+  <!-- reference to Leaflet CSS -->
+<link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7.3/leaflet.css" />
 </head>
-
-<body>
-    
-      
+<body>      
   <div class="wrapper">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.html">Mountain climbing 
-            
-          </a>
+          <a class="navbar-brand" href="/">Mountain climbing </a>
         </div>
       </div>
     </nav>
@@ -35,29 +38,31 @@
     <div class="container">
       <div class="row margin-bottom-10">
         <div class="col-md-2">
-          <aside class="filters">
-            <div class="panel panel-default">
-              <div class="panel-heading">Filter Search</div>
-              <div class="panel-body">
-                <form>
-                  <div class="form-group">
-                    <ul class="list-group" id="filters">
-                      <li class="filter list-group-item">
-                        <label for="date">Enter a location </label>
-                        <input class="form-control" id="state" type="text" placeholder="">
-                      </li>
-                    </ul>
-                  </div>
-                  <input class="form-control" id="city" type="text" placeholder="Sedona Area">
-                  <button id="button" type="button" class="btn btn-default">Filter</button>
-                </form>
-              </div>
-            </div>
-          </aside>
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td><img src="static/images/city.png" width="100px"></td>
+                <td>Wilderness Area</td>
+              </tr>
+              <tr>
+                <td><img src="static/images/trail.png" width="75px"></td>
+                <td>Hiking Trail</td>
+              </tr>
+              <tr>
+                <td><img src="static/images/rock.png"  width="75px"></td>
+                <td>Climbing Route</td>
+              </tr>
+              <tr>
+                <td><img src="static/images/green.png" width="75px"></td>
+                <td>Dispensary</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="col-md-10">
           <div id="table-area" class="">
-            <div id="map" style="width: 705px; height: 375px"></div>
+            <div id="map" style="width: 1000px; height: 600px"></div>
   
             <table id="ufo-table" class="table table-striped">
               <thead>
@@ -68,11 +73,11 @@
                 </tr>
               </thead>
               <tbody>
-                {% for ea in site_data %}
+                {% for ea in trail_data %}
                   <tr>
-                    <td>{{ea['name']}}</td>
-                    <td>{{ea['latitude']}}</td>
-                    <td>{{ea['longitude']}}</td>
+                    <td>{{ea['trial']}}</td>
+                    <td>{{ea['lat']}}</td>
+                    <td>{{ea['lon']}}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -93,6 +98,8 @@
   <script type="text/javascript" src="static/js/logic.js"></script>
   <!-- <script src="{{ url_for('static',filename='js/logic.js') }}"></script>   -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- Marker Cluster JS -->
+  <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
   </body>
 
 </html>
