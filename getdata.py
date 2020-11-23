@@ -69,7 +69,7 @@ def routes(selectedCity="Sedona Area"):
     # print(result)
     routes_response = []
     for ea in result:
-        routes_response.appyhuend(
+        routes_response.append(
             {
                 "route": ea[0],
                 "lat": ea[1],
