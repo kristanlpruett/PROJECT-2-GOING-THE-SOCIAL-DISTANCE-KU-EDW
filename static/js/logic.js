@@ -112,6 +112,9 @@ function click(e) {
     });
     trailMarkers.addTo(trailLayer);
     myMap.addLayer(trailLayer);
+
+    //Additional steps with the data
+
   });
 
   // Bring in Routes data 
@@ -129,8 +132,12 @@ function click(e) {
       `))
     });
     routeMarkers.addTo(routeLayer);
-    myMap.addLayer(routeLayer);    
+    myMap.addLayer(routeLayer);
+    
+    //Additional steps with the data
   });
+
+
   // Bring in Dispensary data 
   d3.json(`/dispensaries/${e.layer._latlng.lat}/${e.layer._latlng.lng}`).then(d => {    
   // Loop through the trail data
@@ -143,6 +150,8 @@ function click(e) {
     });
     dispMarkers.addTo(dispLayer);
     myMap.addLayer(dispLayer);
+
+    //Additional steps with the data
   });
-  
+  myMap.flyTo([`${e.layer._latlng.lat}`,`${e.layer._latlng.lng}`],8)
 };
