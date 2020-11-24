@@ -82,6 +82,8 @@ d3.csv("static/js/latlong_list.csv", function(response) {
 
 //bring in activity data when clicking a city
 function click(e) {
+  // Variable for name of selected area
+  var selectedArea = e.layer._popup._content
 
   // Create a new marker cluster group
   var trailLayer = L.layerGroup()
@@ -94,11 +96,28 @@ function click(e) {
   // Create a new marker cluster group
   var dispLayer = L.layerGroup()
   var dispMarkers = L.markerClusterGroup();
-
+  
   // Bring in Trails data 
-  d3.json(`/trails/${e.layer._popup._content}`).then(d => {    
+  d3.json(`/trails/${selectedArea}`).then(d => {
+
+    //List of trial difficulty categories
+    var trailDiffs = [
+      {difficulty: "blueBlack", count: 0},
+      {difficulty: "greenBlue", count: 0},
+      {difficulty: "green", count: 0},
+      {difficulty: "blue", count: 0},
+      {difficulty: "dblack", count: 0},
+      {difficulty: "black", count: 0}
+    ];
+    
+    //empty array to collect trail difficulty ratings from selection
+    var trailDiffCounts = []
+    
     // Loop through the trail data
     d.forEach(function (tr) {
+      // Push each difficulty to array
+      trailDiffCounts.push(tr.difficulty)
+      // Create a trailMarker for each trail and bind popup
       trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: trailIcon})
       .bindPopup(
         `<strong>${tr['trail']}</strong><br>
@@ -107,17 +126,53 @@ function click(e) {
         Length: ${tr['length']}<br>
         Difficulty: ${tr['difficulty']}<br>
         Stars: ${tr['stars']}
-
-      `))
+      `));
     });
+
+    // add trail markers to trail layer
     trailMarkers.addTo(trailLayer);
+    // add trail layer to my map
     myMap.addLayer(trailLayer);
 
-    //Additional steps with the data
+    //Get count of each difficulty type
+    trailDiffCounts.forEach(function (c){
+       trailDiffs.forEach(function (f) {
+        if (c==f['difficulty']) {
+          var thisCount = f['count'];
+          f['count'] = thisCount+1
+        }
+      });
+    });
+    //empty arrays for x and y
+    x = []
+    y=[]
 
+    //populate x and y arrays
+    trailDiffs.forEach(function (z) {
+      x.push(z['difficulty'])
+      y.push(z['count'])
+    });
+
+    //create trace
+    var trace1 = {
+      x: x,
+      y: y,
+      type: "bar"
+    };
+    // create data array for the plot
+    var data = [trace1];
+
+    //Define plot layout
+    var layout = {
+      title: `Trail Difficulty Counts for ${selectedArea}`,
+      xaxis: {title: "Difficulty"},
+      yaxis: {title: "Number of Trails"}
+    };
+
+    //Difficulty bar plot
+    Plotly.newPlot("trails-plot", data, layout)
   });
-
-  // Bring in Routes data 
+    // Bring in Routes data 
   d3.json(`/routes/${e.layer._popup._content}`).then(d => {    
     // Loop through the trail data
     d.forEach(function (tr) {
@@ -153,5 +208,105 @@ function click(e) {
 
     //Additional steps with the data
   });
-  myMap.flyTo([`${e.layer._latlng.lat}`,`${e.layer._latlng.lng}`],8)
+    myMap.flyTo([`${e.layer._latlng.lat}`,`${e.layer._latlng.lng}`],8)
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //bring in activity data when clicking a city
+// function click(e) {
+
+//   // Create a new marker cluster group
+//   var trailLayer = L.layerGroup()
+//   var trailMarkers = L.markerClusterGroup();
+
+//   // Create a new marker cluster group
+//   var routeLayer = L.layerGroup()
+//   var routeMarkers = L.markerClusterGroup();
+
+//   // Create a new marker cluster group
+//   var dispLayer = L.layerGroup()
+//   var dispMarkers = L.markerClusterGroup();
+
+//   // Bring in Trails data 
+//   d3.json(`/trails/${e.layer._popup._content}`).then(d => {    
+//     // Loop through the trail data
+//     d.forEach(function (tr) {
+//       trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: trailIcon})
+//       .bindPopup(
+//         `<strong>${tr['trail']}</strong><br>
+//         <a href=${tr['url']} target="_blank"><img src=${tr['image_url']}></a><br>
+//         ${tr['summary']}<br>
+//         Length: ${tr['length']}<br>
+//         Difficulty: ${tr['difficulty']}<br>
+//         Stars: ${tr['stars']}
+
+//       `))
+//     });
+//     trailMarkers.addTo(trailLayer);
+//     myMap.addLayer(trailLayer);
+
+
+
+//     //Additional steps with the data
+
+//   });
+
+//   // Bring in Routes data 
+//   d3.json(`/routes/${e.layer._popup._content}`).then(d => {    
+//     // Loop through the trail data
+//     d.forEach(function (tr) {
+//       routeMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: routeIcon})
+//       .bindPopup(
+//         `<strong>${tr['route']}</strong><br>
+//         <a href=${tr['url']} target="_blank"><img src=${tr['image_url']}></a><br>
+//         Type: ${tr['type']}<br>
+//         Rating: ${tr['rating']}<br>
+//         Pitches: ${tr['pitches']}<br>
+//         Stars: ${tr['stars']}
+//       `))
+//     });
+//     routeMarkers.addTo(routeLayer);
+//     myMap.addLayer(routeLayer);
+    
+//     //Additional steps with the data
+//   });
+
+
+//   // Bring in Dispensary data 
+//   d3.json(`/dispensaries/${e.layer._latlng.lat}/${e.layer._latlng.lng}`).then(d => {    
+//   // Loop through the trail data
+//     d.forEach(function (tr) {
+//       trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: dispIcon})
+//       .bindPopup(
+//         `<strong>${tr['dispensary']}</strong><br>
+//         Type: ${tr['type']}<br>
+//       `))
+//     });
+//     dispMarkers.addTo(dispLayer);
+//     myMap.addLayer(dispLayer);
+
+//     //Additional steps with the data
+//   });
+//   myMap.flyTo([`${e.layer._latlng.lat}`,`${e.layer._latlng.lng}`],8)
+// };
