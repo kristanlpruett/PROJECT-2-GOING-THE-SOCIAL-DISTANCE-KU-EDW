@@ -2,7 +2,7 @@
 ### Members:
 - Jay Jackson
 - Kristan Pruett
-- Vineet Skriti
+- Vineet Sikri
 - Andrew Walker
 
 ## Rationale
