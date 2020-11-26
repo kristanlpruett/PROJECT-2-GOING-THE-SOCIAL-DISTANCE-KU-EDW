@@ -83,8 +83,9 @@ d3.csv("static/js/latlong_list.csv", function(response) {
 //bring in activity data when clicking a city
 function click(e) {
   // Variable for name of selected area
-  var selectedArea = e.layer._popup._content
-
+  var selectedArea = e.layer._popup._content;
+  var lat = e.layer._latlng.lat;
+  var lon = e.layer._latlng.lng;
   // Create a new marker cluster group
   var trailLayer = L.layerGroup()
   var trailMarkers = L.markerClusterGroup();
@@ -145,7 +146,7 @@ function click(e) {
     });
     //empty arrays for x and y
     x = []
-    y=[]
+    y = []
 
     //populate x and y arrays
     trailDiffs.forEach(function (z) {
@@ -172,10 +173,37 @@ function click(e) {
     //Difficulty bar plot
     Plotly.newPlot("trails-plot", data, layout)
   });
-    // Bring in Routes data 
+
+  // Bring in Routes data 
   d3.json(`/routes/${e.layer._popup._content}`).then(d => {    
+    //List of route rating categories
+    var routeRating = [
+      {rating: "5.5", count: 0},
+      {rating: "5.6", count: 0},
+      {rating: "5.7", count: 0},
+      {rating: "5.8", count: 0},
+      {rating: "5.9", count: 0},
+      {rating: "5.10", count: 0},
+    ];
+
+    var routeType = [
+      {type: "Sport", count: 0},
+      {type: "Trad", count: 0},
+      {type: "TR", count: 0}
+    ];
+
+    // Empty arrays to collect chart data from selection
+    var routeRatingCounts = []
+    var routeTypeCounts = []
+
     // Loop through the trail data
     d.forEach(function (tr) {
+      // Push each rating to array
+      routeRatingCounts.push(tr.rating);
+      // Push each type to array
+      routeTypeCounts.push(tr.type);
+
+      // Create a routeMarker for each route and bind popup
       routeMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: routeIcon})
       .bindPopup(
         `<strong>${tr['route']}</strong><br>
@@ -186,15 +214,91 @@ function click(e) {
         Stars: ${tr['stars']}
       `))
     });
+    // add route markers to route layer
     routeMarkers.addTo(routeLayer);
+    // add route layer to my map
     myMap.addLayer(routeLayer);
+
+    //Bar Chart with Ratings
+       // Get count of each rating type
+    routeRatingCounts.forEach(function (c) {
+      routeRating.forEach(function (f) {
+        if (c.includes(f['rating'])) {
+          var thisCount = f['count'];
+          f['count'] = thisCount+1
+        };
+      });
+    });
+    //empty arrays for x and y
+    x = []
+    y = []
+    //populate x and y arrays
+    routeRating.forEach(function (z) {
+      x.push(z['rating']);
+      y.push(z['count']);
+    });
+    //create trace
+    var trace2 = {
+      x: x,
+      y: y,
+      type: "bar"
+    };
+    // create data array for the plot
+    var dataBar = [trace2];
+    //Define plot layout
+    var layoutBar = {
+      title: `Route Rating Counts for ${selectedArea}`,
+      xaxis: {title: "Rating", type: 'category'},
+      yaxis: {title: "Number of Routes"}
+    };
+    //Rating bar plot
+    Plotly.newPlot("routes-plot", dataBar, layoutBar)
+
+    //Pie Chart with Types
+    // Get count of each type type
+    routeTypeCounts.forEach(function (c) {
+      routeType.forEach(function (f) {
+        if (c.includes(f['type'])) {
+          var thisCount = f['count'];
+          f['count'] = thisCount+1
+        };
+      });
+    });
+
+    //empty arrays for values and labels
+    values = []
+    labels = []
+
+    //populate values and labels arrays
+    routeType.forEach(function (z) {
+      values.push(z['count']);
+      labels.push(z['type']);
+    });
+
+    //create traces
+    var trace3 = {
+      values: values,
+      labels: labels,
+      type: "pie"
+    };
+
+    var dataPie = [trace3];
+
+    //Define pie layout
+    var layoutPie = {
+      title: `Route Types in ${selectedArea}`,
+      height: 400,
+      width: 400
+    };
     
-    //Additional steps with the data
+    //Type pie chart
+    Plotly.newPlot("routes-pie", dataPie, layoutPie)
+
   });
 
 
   // Bring in Dispensary data 
-  d3.json(`/dispensaries/${e.layer._latlng.lat}/${e.layer._latlng.lng}`).then(d => {    
+  d3.json(`/dispensaries/${lat}/${lon}`).then(d => {    
   // Loop through the trail data
     d.forEach(function (tr) {
       trailMarkers.addLayer(L.marker([tr['lat'], tr['lon']],{icon: dispIcon})
