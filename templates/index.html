@@ -27,49 +27,103 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Mountain climbing </a>
+          <a class="navbar-brand" href="/">Refresh</a>
         </div>
       </div>
     </nav>
     <div class="col-md-12 jumbotron text-center">
-      <h1>Social Distancing </h1>
+      <h1>Going the Social Distance</h1>
       <!--<img class="nav-ufo" src="https://media.giphy.com/media/zJA5yw4qlvmaA/giphy.gif"> -->
-      <p>Reach Healthy Highs !!! </p>
+      <p>Reach Healthy Highs Under Blue Skies</p>
     </div>
-    <div class="container">
-      <div class="row margin-bottom-10">
-        <div class="col-md-2">
+    <div class="container" style="width:100%">
+      <div class="row justify-content-md-center">
+        <div class="col-md-3 col-lg-3 col-xl-3">
+          <aside class="filters">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="font-size:20px;">Locations Available</div>
+              <div class="panel-body">
+                <div>Select from the dropdown or click a wilderness area to add routes and trails at your desired location.</div>
+                <form>
+                  <div class="form-group">
+                    <ul class="list-group" id="filters">
+                      <li class="filter list-group-item">
+                        <select id="selDataset" onchange="pickHere(this)"></select>
+                      </li>
+                    </ul>
+                  </div>
+                </form>
+                <a href="/">Click here to start a new map</a>
+              </div>
+            </div>
+          </aside>
           <table>
             <thead></thead>
             <tbody>
               <tr>
-                <td><img src="static/images/city.png" width="100px"></td>
-                <td>Wilderness Area</td>
+                <td id="legend-box"><img id="legend-img" src="static/images/city.png"></td>
+                <td id="legend-text">Wilderness Area</td>
               </tr>
               <tr>
-                <td><img src="static/images/green.png" width="75px"></td>
-                <td>Dispensary</td>
+                <td id="legend-box"><img id="legend-img" src="static/images/rock.png"></td>
+                <td id="legend-text">Climbing Route</td>
               </tr>
               <tr>
-                <td><img src="static/images/rock.png"  width="75px"></td>
-                <td>Climbing Route</td>
+                <td id="legend-box"><img id="legend-img" src="static/images/trail.png"></td>
+                <td id="legend-text">Hiking Trail</td>
               </tr>
               <tr>
-                <td><img src="static/images/trail.png" width="75px"></td>
-                <td>Hiking Trail</td>
+                <td id="legend-box"><img id="legend-img" src="static/images/green.png"></td>
+                <td id="legend-text">Dispensary</td>
               </tr>
             </tbody>
           </table>
+          <br>
           <div>
-            <img src="static/images/trail_difficulty_legend.png" width="100%">            
+            <h4>Trail Difficulty (by color)</h4>
+            <ul style="list-style-type:square">
+              <li id="diff-text">Green: EASY</li>
+              <li id="diff-text">Green/Blue: EASY/INTERMEDIATE</li>
+              <li id="diff-text">Blue: INTERMEDIATE</li>
+              <li id="diff-text">Blue/Black: INTERMED/DIFFICULT</li>
+              <li id="diff-text">Black: DIFFICULT</li>
+              <li id="diff-text">Double Black: VERY DIFFICULT</li>
+            </ul>
+            <h4>Click 'Wilderness Area' icons on the map to see more data below.</h4>
+            <!--img src="static/images/trail_difficulty_legend.png" width="100%"-->            
           </div>
         </div>
-        <div class="col-md-9">
-          <div id="map" style="width: 1000px; height: 600px"></div>
+        <div class="col-md-9 col-lg-9 col-xl-9">
+          <div id="map" style="width:100%;"></div>
+          <!-- div id="map" style="width: 1000px; height: 600px"></div-->
         </div>
       </div>
-      <div class = "row">
-        <div class = "col-md-4">
+      <br>
+      <div class = "row" style="margin-top:25px;">
+        <div>
+          <div class="tab">
+            <button class="tablinks" onclick="showChart(event, 'Trails')" id="defaultOpen">Trail Difficulty</button>
+            <button class="tablinks" onclick="showChart(event, 'Routes')">Route Ratings</button>
+            <button class="tablinks" onclick="showChart(event, 'Routes Pie')">Route Types</button>
+          </div>
+        </div>
+        <!-- Tab content -->
+        <div id="Trails" class="tabcontent">
+          <br>
+          <div id="trails-plot" style="width:50%"></div>
+        </div>
+        <div id="Routes" class="tabcontent">
+          <br>
+          <div id="routes-plot" style="width:50%"></div>
+        </div>
+        <div id="Routes Pie" class="tabcontent">
+          <br>
+          <div id="routes-pie" style="width:50%"></div>
+        </div>
+        <!--div class="col-md-6">
+          Placeholder
+        </div-->
+        <!-- <div class = "col-md-4">
           <div id="trails-plot"></div>
         </div>
         <div class = "col-md-4">
@@ -77,11 +131,12 @@
         </div>
         <div class = "col-md-4">
           <div id="routes-pie"></div>
-        </div>
+        </div> -->
       </div>
     </div>
     <footer class="footer">
     </footer>
+
   </div>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
@@ -94,6 +149,11 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <!-- Marker Cluster JS -->
   <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
-  </body>
+
+  <script>
+  document.getElementById("defaultOpen").click();
+  </script>
+  
+</body>
 
 </html>
