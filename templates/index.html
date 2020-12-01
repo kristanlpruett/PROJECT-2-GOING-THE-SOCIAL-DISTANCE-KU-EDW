@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Social distancing </title>
+  <title>Social Distancing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -20,6 +20,8 @@
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
   <!-- reference to Leaflet CSS -->
   <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7.3/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600" rel="stylesheet">
+
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>      
@@ -33,7 +35,6 @@
     </nav>
     <div class="col-md-12 jumbotron text-center">
       <h1>Going the Social Distance</h1>
-      <!--<img class="nav-ufo" src="https://media.giphy.com/media/zJA5yw4qlvmaA/giphy.gif"> -->
       <p>Reach Healthy Highs Under Blue Skies</p>
     </div>
     <div class="container" style="width:100%">
@@ -101,22 +102,33 @@
       <br>
       <div class = "row" style="margin-top:25px;">
         <div>
-          <div class="tab">
+          <div class="tab col-md-6 col-lg-6 col-xl-6">
             <button class="tablinks" onclick="showChart(event, 'Trails')" id="defaultOpen">Trail Difficulty</button>
             <button class="tablinks" onclick="showChart(event, 'Routes')">Route Ratings</button>
             <button class="tablinks" onclick="showChart(event, 'Routes Pie')">Route Types</button>
+            <br>
+          </div>
+          <div class="tab col-md-6 col-lg-6 col-xl-6" style="padding:5px">
+            <br>
+            <br>
+            <div id="scatter" style="width:100%;height:100%"></div>
+            <!--h4 style="color:black">Previously Selected Areas:</h4>
+            <ul id="location-list"></ul-->
           </div>
         </div>
         <!-- Tab content -->
         <div id="Trails" class="tabcontent">
           <br>
+          <br>
           <div id="trails-plot" style="width:50%"></div>
         </div>
         <div id="Routes" class="tabcontent">
           <br>
+          <br>
           <div id="routes-plot" style="width:50%"></div>
         </div>
         <div id="Routes Pie" class="tabcontent">
+          <br>
           <br>
           <div id="routes-pie" style="width:50%"></div>
         </div>
@@ -146,10 +158,12 @@
   <!-- <script src="static/js/logic.js"></script> -->
   <script type="text/javascript" src="static/js/logic.js"></script>
   <!-- <script src="{{ url_for('static',filename='js/logic.js') }}"></script>   -->
+  <!--script type="text/javascript" src="static/js/animate.js"></script-->
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <!-- Marker Cluster JS -->
   <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
-
+  <!--Chart.js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
   <script>
   document.getElementById("defaultOpen").click();
   </script>

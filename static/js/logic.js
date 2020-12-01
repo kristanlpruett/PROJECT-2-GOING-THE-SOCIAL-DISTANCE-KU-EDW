@@ -1,3 +1,5 @@
+var apiKey = "57ebb2e2cd5bac22f58ce3301c83c468";
+
 var myMap = L.map("map", {
   center: [39.8283, -98.5795],
   zoom: 4
@@ -87,6 +89,8 @@ d3.csv("static/js/latlong_list.csv", function(response) {
     subject.text(i.name+", "+i.lat+", "+i.long);
   })
 
+  makeChart(dropList);
+
   //add markers to layer
   cityMarkers.addTo(cityLayer);
   //add layer to myMap
@@ -110,7 +114,6 @@ function click(e) {
   // Create a new marker cluster group
   var dispLayer = L.layerGroup()
   var dispMarkers = L.markerClusterGroup();
-  
 
   // Bring in Trails data 
   d3.json(`/trails/${selectedArea}`).then(d => {
@@ -143,7 +146,6 @@ function click(e) {
         Stars: ${tr['stars']}
       `));
     });
-
     // add trail markers to trail layer
     trailMarkers.addTo(trailLayer);
     // add trail layer to my map
@@ -334,6 +336,7 @@ function click(e) {
     //Additional steps with the data
   });
     myMap.flyTo([`${e.layer._latlng.lat}`,`${e.layer._latlng.lng}`],8)
+
 };
 
 function pickHere(e) {
@@ -343,7 +346,10 @@ function pickHere(e) {
   var latLoc = result.split(",")[1]
   var longLoc = result.split(",")[2]
 
-  console.log(longLoc)
+  var addtolist = document.createElement('li');
+  addtolist.innerHTML = location;
+  var list = document.getElementById("location-list");
+  list.appendChild(addtolist);
 
   // Create a new marker cluster group
   var trailLayer = L.layerGroup()
@@ -432,4 +438,51 @@ function showChart(event, chartName) {
 
   document.getElementById(chartName).style.display = "block";
   event.currentTarget.className += " active";
+}
+
+function makeChart(list) { 
+  var latList = []
+  var longList = []
+  var nameList = []
+
+  for (i = 0; i < list.length; i++) {
+    latList.push(list[i].lat);
+    longList.push(list[i].long);
+    nameList.push(list[i].name);
+  };
+
+  var trace = {
+    x: longList,
+    y: latList,
+    text: nameList,
+    mode: 'markers',
+    type: 'scatter'
+  };
+
+  var data = [trace];
+  var layout = {
+    title: 'All Locations via Latitude & Longitude'
+  }
+
+  return Plotly.newPlot('scatter', data, layout);
+
+  // var latList = []
+  // var longList = []
+  // var tempList = []
+
+  // for (i = 0; i < list.length; i++) {
+  //   var curr = 0;
+  //   latList.push(list[i].lat);
+  //   longList.push(list[i].long);
+
+  //   var weatherUrl = "http://api.openweathermap.org/data/2.5/weather?lat="+list[i].lat+"&lon="+list[i].long+"&APPID="+apiKey+"&units=imperial";
+    
+  //   d3.json(weatherUrl).then(d => {
+  //     curr = d.main.temp;
+  //     console.log(curr);
+  //   })
+    
+  //   tempList.push(curr);
+  //   }
+  
 }

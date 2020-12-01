@@ -29,6 +29,10 @@ html, body, .row, .wrapper{
   font-size: 12px;
 }
 
+#location-list {
+  color: black;
+}
+
 select {
   width: 100%;
   height: auto;
@@ -62,6 +66,7 @@ select {
 
 /* Style the buttons that are used to open the tab content */
 .tab button {
+  font-size: 16px;
   color: black;
   background-color: inherit;
   float: left;
@@ -88,9 +93,3 @@ select {
   margin: 15px;
   border-top: none;
 }
-
-/* .tabitem {
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -25px;
-} */
